@@ -1,51 +1,83 @@
-<!DOCTYPE html> 
-<html lang="zh-TW"> 
-<head> 
-    <meta charset="UTF-8"> 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> 
-    <title>手機專業監控牆</title> 
-    <style> 
-        body { background-color: #000; margin: 0; padding: 0; color: #fff; font-family: sans-serif; } 
-        .header { height: 40px; line-height: 40px; text-align: center; background: #131722; font-size: 14px; color: #00ffcc; border-bottom: 1px solid #333; } 
-        .container { display: flex; flex-direction: column; width: 100vw; } 
-        .chart-box { height: 300px; width: 100%; border-bottom: 2px solid #222; position: relative; } 
-        .label { position: absolute; top: 5px; left: 10px; z-index: 10; font-size: 10px; color: rgba(255,255,255,0.5); pointer-events: none; } 
-    </style> 
-</head> 
-<body> 
-    <div class="header">🚀 全球實時數據監控 (1分K)</div> 
-     
-    <div class="container"> 
-        <div class="chart-box"><span class="label">比特幣 BTC</span><div id="c1" style="height:100%;"></div></div> 
-        <div class="chart-box"><span class="label">乙太幣 ETH</span><div id="c2" style="height:100%;"></div></div> 
-        <div class="chart-box"><span class="label">黃金現貨 GOLD</span><div id="c3" style="height:100%;"></div></div> 
-        <div class="chart-box"><span class="label">原油現貨 OIL</span><div id="c4" style="height:100%;"></div></div> 
-        <div class="chart-box"><span class="label">Solana SOL</span><div id="c5" style="height:100%;"></div></div> 
-        <div class="chart-box"><span class="label">BNB 幣</span><div id="c6" style="height:100%;"></div></div> 
-        <div class="chart-box"><span class="label">瑞波幣 XRP</span><div id="c7" style="height:100%;"></div></div> 
-        <div class="chart-box"><span class="label">比特幣現金 BCH</span><div id="c8" style="height:100%;"></div></div> 
-    </div> 
- 
-    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script> 
-    <script type="text/javascript"> 
-        function loadChart(id, symbol) { 
-            new TradingView.widget({ 
-                "autosize": true, "symbol": symbol, "interval": "1", 
-                "timezone": "Asia/Taipei", "theme": "dark", "style": "1", 
-                "locale": "zh_TW", "toolbar_bg": "#f1f3f6", 
-                "enable_publishing": false, "hide_top_toolbar": false, 
-                "save_image": false, "container_id": id 
-            }); 
-        } 
-        // 依序加載 
-        loadChart("c1", "BINANCE:BTCUSDT"); 
-        loadChart("c2", "BINANCE:ETHUSDT"); 
-        loadChart("c3", "TVC:GOLD"); 
-        loadChart("c4", "TVC:USOIL"); 
-        loadChart("c5", "BINANCE:SOLUSDT"); 
-        loadChart("c6", "BINANCE:BNBUSDT"); 
-        loadChart("c7", "BINANCE:XRPUSDT"); 
-        loadChart("c8", "BINANCE:BCHUSDT"); 
-    </script> 
-</body> 
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pro-Monitor v2.0</title>
+    <style>
+        body { background-color: #000; margin: 0; padding: 0; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        .nav-bar { display: flex; background: #131722; border-bottom: 1px solid #333; position: sticky; top: 0; z-index: 100; }
+        .nav-btn { flex: 1; padding: 12px; text-align: center; cursor: pointer; font-size: 14px; font-weight: bold; color: #8a8d97; border-bottom: 2px solid transparent; }
+        .nav-btn.active { color: #00ffcc; border-bottom: 2px solid #00ffcc; background: #1e222d; }
+        .container { display: none; flex-direction: column; width: 100vw; }
+        .container.active { display: flex; }
+        .chart-box { height: 350px; width: 100%; border-bottom: 4px solid #111; position: relative; }
+        .label { position: absolute; top: 8px; left: 12px; z-index: 5; font-size: 11px; color: rgba(0, 255, 204, 0.7); font-weight: bold; pointer-events: none; }
+    </style>
+</head>
+<body>
+
+    <div class="nav-bar">
+        <div class="nav-btn active" onclick="showTab('crypto', this)">加密貨幣</div>
+        <div class="nav-btn" onclick="showTab('stocks', this)">熱門美股</div>
+    </div>
+
+    <div id="crypto" class="container active">
+        <div class="chart-box"><span class="label">BTC/USDT</span><div id="c1" style="height:100%;"></div></div>
+        <div class="chart-box"><span class="label">ETH/USDT</span><div id="c2" style="height:100%;"></div></div>
+        <div class="chart-box"><span class="label">SOL/USDT</span><div id="c3" style="height:100%;"></div></div>
+        <div class="chart-box"><span class="label">GOLD (黃金)</span><div id="c4" style="height:100%;"></div></div>
+    </div>
+
+    <div id="stocks" class="container">
+        <div class="chart-box"><span class="label">NVIDIA (輝達)</span><div id="s1" style="height:100%;"></div></div>
+        <div class="chart-box"><span class="label">TESLA (特斯拉)</span><div id="s2" style="height:100%;"></div></div>
+        <div class="chart-box"><span class="label">APPLE (蘋果)</span><div id="s3" style="height:100%;"></div></div>
+        <div class="chart-box"><span class="label">NAS 100 (那指)</span><div id="s4" style="height:100%;"></div></div>
+    </div>
+
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    <script type="text/javascript">
+        function loadChart(id, symbol) {
+            new TradingView.widget({
+                "autosize": true, "symbol": symbol, "interval": "1",
+                "timezone": "Asia/Taipei", "theme": "dark", "style": "1",
+                "locale": "zh_TW", "toolbar_bg": "#f1f3f6",
+                "enable_publishing": false, "hide_top_toolbar": false,
+                "save_image": false, "container_id": id,
+                // --- 加入技術指標 ---
+                "studies": [
+                    "Volume@tv-basicstudies",    // 成交量
+                    "MACD@tv-basicstudies"      // MACD
+                ]
+            });
+        }
+
+        // 初始化加載
+        function init() {
+            // 加密貨幣
+            loadChart("c1", "BINANCE:BTCUSDT");
+            loadChart("c2", "BINANCE:ETHUSDT");
+            loadChart("c3", "BINANCE:SOLUSDT");
+            loadChart("c4", "TVC:GOLD");
+            // 美股
+            loadChart("s1", "NASDAQ:NVDA");
+            loadChart("s2", "NASDAQ:TSLA");
+            loadChart("s3", "NASDAQ:AAPL");
+            loadChart("s4", "CURRENCYCOM:US100");
+        }
+
+        // 分頁切換邏輯
+        function showTab(tabId, btn) {
+            document.querySelectorAll('.container').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btn.classList.add('active');
+            // 重新觸發圖表渲染以確保排版正確
+            window.dispatchEvent(new Event('resize'));
+        }
+
+        init();
+    </script>
+</body>
 </html>
